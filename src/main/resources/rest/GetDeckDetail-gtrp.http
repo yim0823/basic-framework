@@ -1,0 +1,5 @@
+GET http://localhost:8080/v1/configuration/story/572f34f6-7661-440f-8929-162c0b31d757?accountid=yim0823
+Content-Type: application/json
+
+###
+

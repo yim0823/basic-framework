@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<configuration>
+
+    <!-- Console Appender -->
+    <springProfile name="console-logging">
+        <appender name="Console" class="ch.qos.logback.core.ConsoleAppender">
+            <layout class="ch.qos.logback.classic.PatternLayout">
+                <Pattern>
+                    %d{yyyy-MM-dd HH:mm:ss} [%-5p] ${PID:- } --- [%50.50F] %-40.40M\(%4L\) : %m%n
+                </Pattern>
+            </layout>
+        </appender>
+    </springProfile>
+
+    <!-- FILE Appender -->
+    <springProfile name="file-logging">
+        <property name="LOGS" value="./logs" />
+        <appender name="RollingFile" class="ch.qos.logback.core.rolling.RollingFileAppender">
+            <file>${LOGS}/basic-framework.log</file>
+            <encoder class="ch.qos.logback.classic.encoder.PatternLayoutEncoder">
+                <!--<pattern>${FILE_LOG_PATTERN}</pattern>-->
+                <Pattern>%d %p %C{1.} [%t] %m%n</Pattern>
+            </encoder>
+
+            <!-- rollover daily and when the file reaches 10 MegaBytes -->
+            <rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
+                <fileNamePattern>
+                    ${LOGS}/archived/spring-boot-logger-%d{yyyy-MM-dd}.%i.log
+                </fileNamePattern>
+                <timeBasedFileNamingAndTriggeringPolicy class="ch.qos.logback.core.rolling.SizeAndTimeBasedFNATP">
+                    <maxFileSize>10MB</maxFileSize>
+                </timeBasedFileNamingAndTriggeringPolicy>
+            </rollingPolicy>
+        </appender>
+    </springProfile>
+
+    <root>
+        <springProfile name="console-logging">
+            <appender-ref ref="Console" />
+        </springProfile>
+
+        <springProfile name="file-logging">
+            <appender-ref ref="RollingFile" />
+        </springProfile>
+    </root>
+
+</configuration>

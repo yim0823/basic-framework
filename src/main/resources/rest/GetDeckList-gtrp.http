@@ -1,0 +1,19 @@
+GET http://{{host-url}}:{{port}}/v1/configuration/storybox?accountid=yim0823
+Content-Type: application/json
+
+> {%
+client.test("Request executed successfully", function() {
+  client.assert(response.status === 200, "Response status is not 200");
+});
+
+###
+
+GET http://{{host-url}}:{{port}}/v1/configuration/storybox?accountid=yim0823&keyword[include][deckname]&limit=20&page=1&sort[createdat]=desc
+Content-Type: application/json
+
+> {%
+client.test("Request executed successfully", function() {
+  client.assert(response.status === 200, "Response status is not 200");
+});
+
+###

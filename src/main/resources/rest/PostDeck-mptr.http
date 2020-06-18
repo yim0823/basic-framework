@@ -1,0 +1,48 @@
+POST http://{{host-url}}:{{port}}/v1/configuration/storybox
+Content-Type: multipart/form-data; boundary=WebAppBoundary
+
+--WebAppBoundary
+# File upload
+Content-Disposition: form-data; name="filedata"; filename="ec2-s.xlsx"
+
+< ../../data/ec2-s.xlsx
+
+--WebAppBoundary
+Content-Disposition: form-data; name="deckname"
+Content-Type: text/plain
+
+dcos-deck04
+
+--WebAppBoundary
+Content-Disposition: form-data; name="region"
+Content-Type: text/plain
+
+5
+
+--WebAppBoundary
+Content-Disposition: form-data; name="accountid"
+Content-Type: text/plain
+
+yim0823
+
+--WebAppBoundary
+Content-Disposition: form-data; name="inputtype"
+Content-Type: text/plain
+
+2
+
+--WebAppBoundary
+Content-Disposition: form-data; name="description"
+Content-Type: text/plain
+
+It will create sort of resources on AWS for test
+
+--WebAppBoundary
+Content-Disposition: form-data; name="productcode"
+Content-Type: text/plain
+
+1
+
+--WebAppBoundary--
+
+###

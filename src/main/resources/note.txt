@@ -1,0 +1,54 @@
+[build]
+gradlew clean build -x test -Pprofile=dev
+
+[run]
+nohup java \
+-Xms2048m \
+-Xmx4086m \
+-XX:+UseG1GC \
+-XX:NewRatio=7 \
+-verbose:gc \
+-Xlog:gc:/opt/apps/logs/gc.log \
+-XX:+HeapDumpOnOutOfMemoryError \
+-XX:HeapDumpPath=/opt/apps/hprof/heapdump.hprof \
+-jar -Dspring.profiles.active=dev /opt/apps/configuration-0.3.0.jar > /dev/null 2>&1 &
+
+ps -ef | grep 'auto-*'
+kill -9 [PID]
+
+sudo netstat -lntp | grep 8080
+
+[DB]
+create database dcos;
+create user 'dcos'@'%' identified by 'dnjfkqpf!1';
+GRANT ALL PRIVILEGES ON dcos.* TO `dcos`@`%` IDENTIFIED BY 'dnjfkqpf!1';
+SHOW GRANTS FOR 'dcos'@'%';
+
+# 한글 적용 위한 설정
+ALTER TABLE deck convert to charset utf8;
+ALTER TABLE deck_history convert to charset utf8;
+
+/etc/mysql/mariadb.conf.d/50-server.cnf
+  # 모든 서버에서 접근 가능하게 수정
+  bind-address          = 0.0.0.0
+
+  # MariaDB 767 byte 에러 대책 (error message: Specified key was too long; max key length is 767 bytes)
+  innodb_file_format_max=Barracuda
+  innodb_file_format=Barracuda
+  innodb_large_prefix=on
+
+service mysql restart
+
+netstat -tnlp | grep 3306
+tcp        0      0 0.0.0.0:3306            0.0.0.0:*               LISTEN      5797/mysqld
+
+[운영]
+# mariadb datadir 확인
+vi /var/lib/mysql   datadir 변수의 값 확인
+
+# 디렉토리 내 모든 파일들 사이즈 확인
+ls -alh *
+
+# 현재 디렉토리의 전체 사이즈
+du -sh
+
